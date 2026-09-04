@@ -4,7 +4,7 @@
 headphones," but "Sony WH-1000XM6" — and it autonomously gathers evidence from
 independent sources (web, Reddit, YouTube), extracts structured evidence, generates
 claims, verifies them, preserves genuine disagreement between sources, and produces a
-transparent, citation-backed report you can actually audit.
+transparent, citation-backed report you can actually audit. 
 
 It is deliberately **not**: a shopping marketplace, a price-comparison tool, a chatbot, or
 a personalized recommendation engine. One product, one research job, one report.
@@ -104,7 +104,7 @@ fake percentage bar.
 No shopping cart, checkout, affiliate links, multi-product comparison, personalized
 discovery, browser extension, or mobile app — by design. See
 [`BUILD_STATUS.md`](BUILD_STATUS.md) for the current, honest state of the implementation
-and known limitations.
+and known limitations. It is cool tho. 
 
 ## Docs
 
