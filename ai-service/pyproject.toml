@@ -1,0 +1,24 @@
+[project]
+name = "proofly-ai-service"
+version = "1.0.0"
+description = "Proofly AI research service: sources → evidence → claims → verification → report"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "BLE", "SIM"]
+# `date.today()` is deliberate (recency is a calendar-day concept), and FastAPI's
+# `Depends()` defaults are the framework's documented style.
+# UP017: `datetime.UTC` is fine but `timezone.utc` reads the same everywhere else.
+# SIM905: a space-separated stopword string is far more readable than a 60-item list literal.
+ignore = ["UP017", "SIM905"]

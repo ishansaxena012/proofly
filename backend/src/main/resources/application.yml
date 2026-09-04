@@ -1,0 +1,91 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: proofly-backend
+
+  datasource:
+    url: ${SUPABASE_DB_URL:jdbc:postgresql://localhost:5432/proofly}
+    username: ${SUPABASE_DB_USER:postgres}
+    password: ${SUPABASE_DB_PASSWORD:postgres}
+    hikari:
+      pool-name: proofly-pool
+      maximum-pool-size: 10
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Flyway owns the schema; Hibernate must never touch it.
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+          batch_size: 50
+        order_inserts: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      url: ${REDIS_URL:redis://localhost:6379/0}
+      timeout: 5s
+
+  threads:
+    virtual:
+      enabled: true
+
+  mvc:
+    problemdetails:
+      enabled: false
+
+proofly:
+  ai:
+    base-url: ${AI_SERVICE_URL:http://localhost:8000}
+    connect-timeout: 5s
+    read-timeout: 30s
+    followup-timeout: ${RESEARCH_FOLLOWUP_TIMEOUT_SECONDS:60}s
+    max-dispatch-attempts: ${RESEARCH_DISPATCH_MAX_ATTEMPTS:3}
+    dispatch-retry-backoff: 2s
+  research:
+    max-concurrent-jobs: ${RESEARCH_MAX_CONCURRENT_JOBS:3}
+    demo-mode: ${DEMO_MODE:true}
+    queue-key: proofly:research:queue
+    event-channel-prefix: "proofly:events:"
+    sse-timeout: ${RESEARCH_SSE_TIMEOUT_SECONDS:900}s
+    sse-heartbeat-interval: 20s
+    max-duration: ${RESEARCH_MAX_DURATION_SECONDS:600}s
+  security:
+    internal-api-key: ${INTERNAL_API_KEY:dev-internal-key-change-me}
+    jwt-issuer-uri: ${JWT_ISSUER_URI:}
+    jwt-audience: ${JWT_AUDIENCE:}
+    dev-user-email-domain: dev.proofly.local
+
+proofly-dispatcher:
+  poll-interval-ms: ${RESEARCH_DISPATCH_POLL_INTERVAL_MS:1000}
+  reaper-interval-ms: ${RESEARCH_REAPER_INTERVAL_MS:30000}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    com.proofly.backend: INFO

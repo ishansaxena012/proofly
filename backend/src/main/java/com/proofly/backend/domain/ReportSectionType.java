@@ -1,0 +1,17 @@
+package com.proofly.backend.domain;
+
+public enum ReportSectionType {
+    EXECUTIVE_SUMMARY,
+    CATEGORY_ANALYSIS,
+    STRENGTHS,
+    WEAKNESSES,
+    KEY_FINDINGS,
+    COMMON_PRAISE,
+    COMMON_COMPLAINTS,
+    CONFLICTS,
+    LONG_TERM_OWNERSHIP,
+    WHO_SHOULD_BUY,
+    WHO_SHOULD_AVOID,
+    CAVEATS,
+    SOURCES
+}

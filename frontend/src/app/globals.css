@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 98%;
+    --foreground: 220 20% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 12%;
+
+    --primary: 226 48% 26%;
+    --primary-foreground: 40 30% 98%;
+
+    --secondary: 40 14% 94%;
+    --secondary-foreground: 220 20% 16%;
+
+    --muted: 40 12% 94%;
+    --muted-foreground: 220 8% 44%;
+
+    --accent: 226 40% 94%;
+    --accent-foreground: 226 48% 26%;
+
+    --destructive: 0 62% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 10% 88%;
+    --input: 40 10% 86%;
+    --ring: 226 48% 40%;
+
+    --positive: 158 52% 30%;
+    --negative: 358 58% 44%;
+    --caution: 32 72% 38%;
+    --neutral: 220 8% 44%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 24% 8%;
+    --foreground: 40 18% 94%;
+
+    --card: 224 22% 11%;
+    --card-foreground: 40 18% 94%;
+
+    --popover: 224 22% 11%;
+    --popover-foreground: 40 18% 94%;
+
+    --primary: 226 62% 74%;
+    --primary-foreground: 224 30% 10%;
+
+    --secondary: 224 16% 17%;
+    --secondary-foreground: 40 18% 94%;
+
+    --muted: 224 16% 16%;
+    --muted-foreground: 220 10% 66%;
+
+    --accent: 226 26% 20%;
+    --accent-foreground: 226 62% 84%;
+
+    --destructive: 0 60% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 224 14% 20%;
+    --input: 224 14% 24%;
+    --ring: 226 52% 62%;
+
+    --positive: 158 46% 56%;
+    --negative: 358 66% 68%;
+    --caution: 36 72% 62%;
+    --neutral: 220 10% 66%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      "cv02",
+      "cv03",
+      "cv04";
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* Editorial display type used for page + report headings. */
+  .display {
+    @apply font-serif tracking-[-0.015em];
+  }
+
+  .prose-readable {
+    @apply text-[15px] leading-7 text-foreground/90;
+  }
+
+  .rule {
+    @apply border-t border-border;
+  }
+}
+
+/* Respect reduced-motion for the few animated affordances we use. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
