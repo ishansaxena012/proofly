@@ -22,6 +22,16 @@ interface AuthContextValue {
   mode: AuthMode;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, displayName?: string) => Promise<void>;
+  /**
+   * Redirects the browser to Google via Supabase OAuth. On success the browser
+   * navigates away entirely, then back to `redirectPath` once Google/Supabase
+   * finish; `AuthProvider`'s `onAuthStateChange` subscription picks up the
+   * resulting session automatically on that page, so callers don't need a
+   * dedicated callback route. Throws if Supabase isn't configured (Google
+   * sign-in has no dev-stub equivalent — it needs a real Supabase project with
+   * the Google provider enabled).
+   */
+  signInWithGoogle: (redirectPath: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -108,6 +118,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [applySession],
   );
 
+  const signInWithGoogle = React.useCallback(async (redirectPath: string) => {
+    if (!isSupabaseConfigured()) {
+      throw new Error(
+        "Google sign-in requires Supabase. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, and enable the Google provider in your Supabase project.",
+      );
+    }
+    const supabase = getSupabaseClient();
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}${redirectPath}` },
+    });
+    if (error) throw new Error(error.message);
+    // `signInWithOAuth` navigates the browser to Google; there is no session to
+    // apply yet on this page load.
+  }, []);
+
   const signOut = React.useCallback(async () => {
     if (!isSupabaseConfigured()) {
       clearDevSession();
@@ -119,8 +145,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [applySession]);
 
   const value = React.useMemo<AuthContextValue>(
-    () => ({ session, loading, mode, signIn, signUp, signOut }),
-    [session, loading, mode, signIn, signUp, signOut],
+    () => ({ session, loading, mode, signIn, signUp, signInWithGoogle, signOut }),
+    [session, loading, mode, signIn, signUp, signInWithGoogle, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
